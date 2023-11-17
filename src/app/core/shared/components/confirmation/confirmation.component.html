@@ -1,0 +1,28 @@
+
+<div *ngIf="visible" class="modal fade show" aria-modal="true" role="dialog" style="padding-right: 17px; display: block;background: rgb(0 0 0 / 30%);" >
+  <div class="modal-dialog" [@fadeInOut]>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Confirmation</h4>
+        <button
+          type="button"
+          class="close"
+          (click)="closePopup()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete?&hellip;</p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" (click)="closePopup()">
+          Close
+        </button>
+        <button type="button"  (click)="action.emit(true)" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

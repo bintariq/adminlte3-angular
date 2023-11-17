@@ -1,0 +1,28 @@
+:host {
+  .ng-scrollbar {
+    --scrollbar-thumb-color: var(--cui-border-color, #999);
+    --scrollbar-track-color: var(--cui-body-color, #fff);
+    --scrollbar-hover-size: calc(var(--scrollbar-size) * 1.5);
+  }
+}
+:host-context(.dark-theme) {
+  .ng-scrollbar {
+    --scrollbar-thumb-color: var(--cui-gray-600, #444);
+    --scrollbar-thumb-hover-color: var(--cui-gray-400, #999);
+    --scrollbar-track-color: var(--cui-body-bg, #fff);
+    --scrollbar-hover-size: calc(var(--scrollbar-size) * 1.5);
+  }
+}
+
+.emme-project{
+  width: 190px;
+  height: 35px;
+  font-size: 26px;
+  margin-left: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+ 
+}
+.emme-project  span{
+    color: red;
+}

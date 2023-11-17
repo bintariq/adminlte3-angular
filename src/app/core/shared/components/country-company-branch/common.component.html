@@ -1,0 +1,54 @@
+<ng-container [formGroup]="formGroup">
+
+  <div [cFormFloating]="true" class="mb-3" *ngIf="countryList.length > 0 &&  this.userInfo.roleId == 1">
+    <c-multi-select formControlName="countryId" selectionType="text" optionsStyle="text" id="countryId" class="mb-3"
+      placeholder="Select Country" label="Select Country" (searchValueChange)="searchValueForCountry$.next($event)"
+      (valueChange)="getAllCompanyListByCountry($event)" multiple="false" search="external"
+      [options]="(filteredCountries$ | async) ?? []">
+      <c-multi-select-option *ngFor="let option of filteredCountries$ | async" [value]="option.value">
+        <!-- <svg [cIcon]="icons.cilPaperclip" class="me-1"></svg> -->
+        {{ option.label }}
+      </c-multi-select-option>
+    </c-multi-select>
+    <label cLabel for="countryId">Country</label>
+  </div>
+  <div class="invalid_text mb-2" *ngIf="errors.includes('countryId')">{{formError.errorForCountry}}</div>
+
+  <div [cFormFloating]="true" class="mb-3" *ngIf="this.userInfo.roleId == 1">
+    <c-multi-select
+    formControlName="companyId"
+    selectionType="text"
+    optionsStyle="text"
+    id="companyId"
+    class="mb-3"
+    placeholder="Select Company"
+    label="Select Company"
+    (searchValueChange)="searchValueForCompany$.next($event)"
+    (valueChange)="getAllBranchesListByCompany($event)"
+    multiple="false"
+    search="external"
+    [options]="(filteredCompanies$ | async) ?? []">
+      <c-multi-select-option *ngFor="let option of filteredCompanies$ | async" [value]="option.value">
+        <!-- <svg [cIcon]="icons.cilPaperclip" class="me-1"></svg> -->
+        {{ option.label }}
+      </c-multi-select-option>
+    </c-multi-select>
+    <label cLabel for="countryId">Company</label>
+  </div>
+  <div class="invalid_text mb-2" *ngIf="errors.includes('companyId')">{{formError.errorForCompany}}</div>
+
+  <div [cFormFloating]="true" class="mb-3" *ngIf="!excludeBranchDropdown">
+    <c-multi-select formControlName="branchId" [optionsStyle]="multipleBranches" id="branchId" class="mb-3"
+    label="Select Branch" (searchValueChange)="searchValueForBranch$.next($event)"
+       [multiple]="multipleBranches" search="external"
+      [options]="(filteredBranches$ | async) ?? []">
+      <c-multi-select-option *ngFor="let option of filteredBranches$ | async" [value]="option.value">
+        <!-- <svg [cIcon]="icons.cilPaperclip" class="me-1"></svg> -->
+        {{ option.label }}
+      </c-multi-select-option>
+    </c-multi-select>
+    <label cLabel for="branchId">Branch</label>
+  </div>
+  <div class="invalid_text mb-2" *ngIf="errors.includes('branchId')">{{formError.errorForBranch}}</div>
+
+</ng-container>

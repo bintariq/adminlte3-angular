@@ -1,0 +1,333 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Users Managment</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">users</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.row -->
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Users Table</h3>
+            <button
+              type="button"
+              data-toggle="modal"
+              data-target="#user-modal"
+              class="card-title btn btn-primary"
+              style="float: right"
+              class="btn btn-primary"
+            >
+              Create User
+            </button>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive p-0">
+            <table
+            *ngIf="allUsers.length > 0"
+              datatable
+              class="row-border hover table table-hover text-nowrap"
+            >
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>User Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Staus</th>
+                  <th>Login Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of allUsers">
+                  <td>{{ user.user_id }}</td>
+                  <td>{{ user.userName }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.phone }}</td>
+                  <td>
+                    <div class="custom-control custom-switch">
+                      <input
+                        type="checkbox"
+                        [checked]="user.userStatus == 1"
+                        class="custom-control-input"
+                        (change)="updateStatus(user)"
+                        [id]="user.username"
+                      />
+                      <label
+                        class="custom-control-label"
+                        *ngIf="user.userStatus == 1"
+                        [for]="user.username"
+                        >User is active</label
+                      >
+                      <label
+                        class="custom-control-label"
+                        *ngIf="user.userStatus == 0"
+                        [for]="user.username"
+                        >User is in active</label
+                      >
+                    </div>
+                  </td>
+                  <td>
+                    <div class="custom-control custom-switch">
+                      <input
+                        type="checkbox"
+                        [checked]="user.loginStatus == 1"
+                        class="custom-control-input"
+                        (change)="updateLoginStatus(user)"
+                        [id]="user.username+'1'"
+                      />
+                      <label
+                        class="custom-control-label"
+                        *ngIf="user.loginStatus == 1"
+                        [for]="user.username+'1'"
+                        >User is logged In</label
+                      >
+                      <label
+                        class="custom-control-label"
+                        *ngIf="user.loginStatus == 0"
+                        [for]="user.username+'1'"
+                        >User is logged Out</label
+                      >
+                    </div>
+                  </td>
+                  <td>
+                    <i class="fas fa-trash" (click)="delete(user)"></i>
+                    <i
+                      class="fas fa-pen"
+                      style="margin-left: 15px"
+                      (click)="read(user)"
+                      data-toggle="modal"
+                      data-target="#user-modal"
+                    ></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+<div class="modal fade" id="user-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="!editPopup">Add User</h4>
+        <h4 class="modal-title" *ngIf="editPopup">Edit User</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userForm">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="username">User Name</label>
+              <input
+                type="text"
+                formControlName="username"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': errors.includes('username') }"
+                id="username"
+                placeholder="User Name"
+              />
+              <span
+                id="userName-error"
+                *ngIf="errors.includes('userName')"
+                class="error invalid-feedback"
+              >
+                {{ formError.userName }}</span
+              >
+            </div>
+            <div class="form-group">
+              <label for="role">Roles</label>
+              <ng-select
+                [ngClass]="{ 'is-invalid': errors.includes('selectedRoles') }"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [searchable]="true"
+                bindLabel="name"
+                formControlName="roleId"
+                placeholder="Select Roles"
+              >
+                <ng-option *ngFor="let role of userRoles" [value]="role.id">{{
+                  role.roleName
+                }}</ng-option>
+              </ng-select>
+              <span
+                id="role-error"
+                *ngIf="errors.includes('selectedRoles')"
+                class="error invalid-feedback"
+                >{{ formError.selectedRoles }}</span
+              >
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                formControlName="email"
+                [ngClass]="{ 'is-invalid': errors.includes('email') }"
+                id="email"
+                placeholder="Email"
+              />
+              <span
+                id="email-error"
+                *ngIf="errors.includes('email')"
+                class="error invalid-feedback"
+                >{{ formError.email }}</span
+              >
+            </div>
+            <div class="form-group" *ngIf="!editPopup">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                formControlName="password"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': errors.includes('password') }"
+                id="password"
+                placeholder="Password"
+              />
+              <span
+                id="password-error"
+                *ngIf="errors.includes('password')"
+                class="error invalid-feedback"
+                >{{ formError.password }}</span
+              >
+            </div>
+            <div class="form-group" *ngIf="!editPopup">
+              <label for="password">Password Confirmation</label>
+              <input
+                type="password"
+                formControlName="password_confirmation"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid': errors.includes('password_confirmation')
+                }"
+                id="password_confirmation"
+                placeholder="password_confirmation"
+              />
+              <span
+                id="password_confirmation-error"
+                *ngIf="errors.includes('password_confirmation')"
+                class="error invalid-feedback"
+                >{{ formError.password_confirmation }}</span
+              >
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input
+                type="phone"
+                formControlName="phone"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': errors.includes('phone') }"
+                id="phone"
+                placeholder="Phone"
+              />
+              <span
+                id="phone-error"
+                *ngIf="errors.includes('phone')"
+                class="error invalid-feedback"
+                >{{ formError.phone }}</span
+              >
+            </div>
+            <div class="form-group">
+              <label for="password">Gender</label>
+              <div class="custom-control custom-radio">
+                <input
+                  class="custom-control-input"
+                  formControlName="gender"
+                  value="male"
+                  name="gender"
+                  type="radio"
+                  id="male"
+                />
+                <label for="male" class="custom-control-label">Male</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input
+                  class="custom-control-input"
+                  type="radio"
+                  id="female"
+                  name="gender"
+                  formControlName="gender"
+                  value="female"
+                  checked
+                />
+                <label for="female" class="custom-control-label">Female</label>
+              </div>
+              <span
+                id="phone-error"
+                *ngIf="errors.includes('gender')"
+                class="error invalid-feedback"
+                >{{ formError.gender }}</span
+              >
+            </div>
+            <div class="form-group">
+              <label for="exampleInputFile">File input</label>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="exampleInputFile"
+                  />
+                  <label class="custom-file-label" for="exampleInputFile"
+                    >Choose file</label
+                  >
+                </div>
+                <div class="input-group-append">
+                  <span class="input-group-text">Upload</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </form>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" #closeModal data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" *ngIf="!editPopup"  (click)="create()" class="btn btn-primary">
+          Create
+        </button>
+        <button type="button" *ngIf="editPopup" [disabled]="formSubmissionFlag" (click)="update()" class="btn btn-primary">
+          <div class="spinner-border text-light spinner" *ngIf="formSubmissionFlag"></div>
+          Save changes
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

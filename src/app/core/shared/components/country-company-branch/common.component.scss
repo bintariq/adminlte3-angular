@@ -1,0 +1,33 @@
+.userHeader{
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.table_container{
+  padding: 0 0;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+  background-color: #fff;
+}
+.upload-file-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #cdcdcd;
+  border-radius: 7px;
+  height: 40px;
+  overflow: hidden;
+}
+.upload-file-box .file-label {
+  padding-left: 10px;
+}
+.upload-file-box .upload-btn {
+  color: #3f7bb9;
+  background-color: #eff4ff;
+  height: 100%;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+}
