@@ -1,10 +1,13 @@
-# LteAngular
+# AdminLte3 Angular 16
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.1.
 
-## Development server
+## How To Start
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+1: Run `npm i`.
+2: Run `npm start`.
+
+Navigate to `http://localhost:4200/`.
 
 ## Code scaffolding
 
